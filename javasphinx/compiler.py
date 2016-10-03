@@ -90,6 +90,12 @@ class JavadocRestCompiler(object):
             see_also = ', '.join(self.__output_see(see) for see in doc.tags['see'])
             output.add_line('**See also:** %s' % (see_also,))
 
+        if doc.tags.get('todo'):
+            for todo in doc.tags.get('todo'):
+                todo_rst = util.Directive('todo')
+                todo_rst.add_content(todo)
+                output.add_object(todo_rst)
+
         return output
 
     def __output_see(self, see):
