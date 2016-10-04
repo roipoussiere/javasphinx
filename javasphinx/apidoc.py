@@ -198,10 +198,10 @@ def generate_from_source_file(doc_compiler, source_file, cache_dir):
 
     return documents
 
-def generate_documents(source_files, cache_dir, verbose, member_headers, parser):
+def generate_documents(source_files, cache_dir, verbose, member_headers, parser, todo):
     documents = {}
     sources = {}
-    doc_compiler = compiler.JavadocRestCompiler(None, member_headers, parser)
+    doc_compiler = compiler.JavadocRestCompiler(None, member_headers, parser, todo)
 
     for source_file in source_files:
         if verbose:
@@ -277,6 +277,8 @@ Note: By default this script will not overwrite already created files.""")
                       help='Beautiful Soup---html parser library option.')
     parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
                       help='verbose output')
+    parser.add_option('-d', '--todo', action='store_true', dest='todo',
+                      help='Add todo tasks for each @todo tags.')
 
     (opts, args) = parser.parse_args(argv[1:])
 
@@ -312,7 +314,8 @@ Note: By default this script will not overwrite already created files.""")
         source_files.extend(find_source_files(input_path, excludes))
 
     packages, documents, sources = generate_documents(source_files, opts.cache_dir, opts.verbose,
-                                                      opts.member_headers, opts.parser_lib)
+                                                      opts.member_headers, opts.parser_lib,
+                                                      opts.todo)
 
     write_documents(documents, sources, opts)
 
