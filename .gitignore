@@ -3,3 +3,6 @@ dist/
 *.egg-info/
 .vscode
 .DS_Store
+venv/
+test_doc/_build
+test_doc/javadoc

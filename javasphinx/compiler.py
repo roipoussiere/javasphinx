@@ -25,7 +25,7 @@ class JavadocRestCompiler(object):
     """ Javadoc to ReST compiler. Builds ReST documentation from a Java syntax
     tree. """
 
-    def __init__(self, filter=None, member_headers=True, parser='lxml'):
+    def __init__(self, filter=None, member_headers=True, parser='lxml', todo=False):
         if filter:
             self.filter = filter
         else:
@@ -34,6 +34,7 @@ class JavadocRestCompiler(object):
         self.converter = htmlrst.Converter(parser)
 
         self.member_headers = member_headers
+        self.todo = todo
 
     def __default_filter(self, node):
         """Excludes private members and those tagged "@hide" / "@exclude" in their
@@ -89,6 +90,12 @@ class JavadocRestCompiler(object):
 
             see_also = ', '.join(self.__output_see(see) for see in doc.tags['see'])
             output.add_line('**See also:** %s' % (see_also,))
+
+        if doc.tags.get('todo') and self.todo:
+            for todo in doc.tags.get('todo'):
+                todo_rst = util.Directive('todo')
+                todo_rst.add_content(todo)
+                output.add_object(todo_rst)
 
         return output
 
