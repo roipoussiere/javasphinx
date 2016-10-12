@@ -326,7 +326,7 @@ class JavadocRestCompiler(object):
             imports.append(util.Directive('java:import', package + ' ' + cls).build())
         import_block = imports.build()
 
-        package = ast.package.name if ast.package else 'default package'
+        package = ast.package.name if ast.package else 'default_package'
         type_declarations = []
         for path, node in ast.filter(javalang.tree.TypeDeclaration):
             if not self.filter(node):
